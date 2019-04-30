@@ -6,7 +6,6 @@
 //  Copyright © 2018 André Sanches Bocato. All rights reserved.
 //
 // @TODO: textfields should jump to other lines when text is too long
-// @TODO: You will need to implement the activityViewController's completionWithItemsHandler to call your saveImage method if the action is successful. See this reference: https://developer.apple.com/documentation/uikit/uiactivityviewcontroller/completionwithitemshandler
 // @TODO: center textField.text
 
 import UIKit
@@ -18,16 +17,12 @@ class MemeEditorViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var topTextField: UITextField! {
         didSet {
-            topTextField.delegate = self
-            topTextField.autocapitalizationType = .allCharacters
-            topTextField.defaultTextAttributes = memeTextAttributes
+            configure(topTextField)
         }
     }
     @IBOutlet private weak var bottomTextField: UITextField! {
         didSet {
-            bottomTextField.delegate = self
-            bottomTextField.autocapitalizationType = .allCharacters
-            bottomTextField.defaultTextAttributes = memeTextAttributes
+            configure(bottomTextField)
         }
     }
     @IBOutlet private weak var activityBarButtonItem: UIBarButtonItem!
@@ -67,11 +62,11 @@ class MemeEditorViewController: UIViewController {
     // MARK: - IBActions
     
     @IBAction private func photoLibraryButtonDidReceiveTouchUpInside(_ sender: Any) {
-        selectImagePickerSourceType(sourceType: .photoLibrary)
+        selectImagePickerSourceType(.photoLibrary)
     }
     
     @IBAction private func cameraBarButtonItemDidReceiveTouchUpInside(_ sender: Any) {
-        selectImagePickerSourceType(sourceType: .camera)
+        selectImagePickerSourceType(.camera)
     }
     
     @IBAction private func activityBarButtonItemDidReceiveTouchUpInside(_ sender: Any) {
@@ -82,8 +77,20 @@ class MemeEditorViewController: UIViewController {
         resetMemeData()
     }
     
+    // MARK: - UI Configuration
+    
+    /// Sets up a text field configuration.
+    ///
+    /// - Parameter textField: The text field to be configured.
+    private func configure(_ textField: UITextField) {
+        textField.delegate = self
+        textField.autocapitalizationType = .allCharacters
+        textField.defaultTextAttributes = memeTextAttributes
+    }
+    
     // MARK: - Functions
     
+    /// Presents an activity view controller.
     private func presentActivityView() {
         let imageToShare: UIImage = generateMemedImage()
         let activityViewController = UIActivityViewController(activityItems: [imageToShare], applicationActivities: [])
@@ -106,7 +113,7 @@ class MemeEditorViewController: UIViewController {
         }
     }
     
-    func selectImagePickerSourceType(sourceType: UIImagePickerController.SourceType) {
+    func selectImagePickerSourceType(_ sourceType: UIImagePickerController.SourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = sourceType
@@ -117,10 +124,6 @@ class MemeEditorViewController: UIViewController {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             imageView.image = image
         }
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
     
@@ -160,9 +163,9 @@ class MemeEditorViewController: UIViewController {
     }
     
     func saveImage() {
-        lastMeme = Meme(topText: topTextField.text!,
-                        bottomText: bottomTextField.text!,
-                        originalImage: imageView.image!,
+        lastMeme = Meme(topText: topTextField.text ?? "",
+                        bottomText: bottomTextField.text ?? "",
+                        originalImage: imageView.image ?? UIImage(),
                         memedImage: generateMemedImage())
     }
     
@@ -178,7 +181,15 @@ class MemeEditorViewController: UIViewController {
 
 // MARK: - Extensions
 
-extension MemeEditorViewController: UIImagePickerControllerDelegate { }
+extension MemeEditorViewController: UIImagePickerControllerDelegate {
+    
+    // MARK: - Image Picker Controller Delegate
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+}
 
 extension MemeEditorViewController: UITextFieldDelegate { }
 
