@@ -11,7 +11,7 @@
 
 import UIKit
 
-class MemeEditorViewController: UIViewController, UINavigationControllerDelegate {
+class MemeEditorViewController: UIViewController {
     
     // MARK: - IBOutlets
     
@@ -34,10 +34,22 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet private weak var cancelBarButtonItem: UIBarButtonItem!
     @IBOutlet private weak var cameraBarButtonItem: UIBarButtonItem!
     @IBOutlet private weak var photoLibraryBarButtonItem: UIBarButtonItem!
+    @IBOutlet private weak var printScreenView: UIView!
     
     // MARK: - Properties
     
     private var lastMeme: Meme?
+    
+    // MARK: - Initialization
+    
+    override init(nibName nibNameOrNil: String?,
+                  bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Lifecycle
     
@@ -75,13 +87,11 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     private func presentActivityView() {
         let imageToShare: UIImage = generateMemedImage()
         let activityViewController = UIActivityViewController(activityItems: [imageToShare], applicationActivities: [])
-        activityViewController.completionWithItemsHandler = {(activityType, completed: Bool, returnedItems:[Any]?, error: Error?) in
-            if (!completed) {
-                return
-            }
-            self.saveImage()
+        activityViewController.completionWithItemsHandler = { [weak self] (activityType, completed, returnedItems, error) in
+            if !completed { return }
+            self?.saveImage()
         }
-        self.present(activityViewController, animated: true, completion: nil)
+        present(activityViewController, animated: true, completion: nil)
     }
     
     private func resetMemeData() {
@@ -141,53 +151,35 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     }
     
     private func generateMemedImage() -> UIImage {
-        hideNavigationBarAndToolbar()
-        
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
-        let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsBeginImageContext(printScreenView.frame.size)
+        printScreenView.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        let imageFromPrintScreenView = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
-        showNavigationBarAndToolbar()
-        
-        return memedImage
-    }
-    
-    func hideNavigationBarAndToolbar() {
-        toolbar.isHidden = true
-        navigationBar.isHidden = true
-    }
-    
-    func showNavigationBarAndToolbar() {
-        toolbar.isHidden = false
-        navigationBar.isHidden = false
+        return imageFromPrintScreenView
     }
     
     func saveImage() {
-        // Create the meme
-        let memedImage = generateMemedImage()
-        self.lastMeme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imageView.image!, memedImage: memedImage)
+        lastMeme = Meme(topText: topTextField.text!,
+                        bottomText: bottomTextField.text!,
+                        originalImage: imageView.image!,
+                        memedImage: generateMemedImage())
     }
     
-    // Mark: - Text Attributes
+    // MARK: - Attributed Text Attributes
     
-    let memeTextAttributes:[NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.strokeColor: UIColor.black,
-        NSAttributedString.Key.foregroundColor: UIColor.white,
-        NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSAttributedString.Key.strokeWidth: -5.0]
+    let memeTextAttributes: [NSAttributedString.Key: Any] = [
+        .strokeColor: UIColor.black,
+        .foregroundColor: UIColor.white,
+        .font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+        .strokeWidth: -5.0
+    ]
 }
 
 // MARK: - Extensions
 
-extension MemeEditorViewController: UIImagePickerControllerDelegate {
-    
-    // MARK: - Image Picker Controller Delegate
-    
-}
+extension MemeEditorViewController: UIImagePickerControllerDelegate { }
 
-extension MemeEditorViewController: UITextFieldDelegate {
-    
-    // MARK: - Text Field Delegate
-    
-}
+extension MemeEditorViewController: UITextFieldDelegate { }
+
+extension MemeEditorViewController: UINavigationControllerDelegate { }
