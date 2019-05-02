@@ -16,3 +16,4 @@ Fortunately none up to this moment.
 * Integrate [MemeMe 2.0](https://github.com/andrebocato/MemeMe2.0) features.
 * Implement networking layer.
 * Implement a random image generator using the [Flickr API](https://www.flickr.com/services/api/).
+* Properly add and fix icons.
