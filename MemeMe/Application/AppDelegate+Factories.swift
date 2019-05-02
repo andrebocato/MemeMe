@@ -19,7 +19,7 @@ extension AppDelegate: ModelControllersFactoryProtocol {
     
 }
 
-extension AppDelegate: ViewControllersFactoryProtocol {
+extension AppDelegate: ViewControllersFactoryProtocol {    
     
     // MARK: - View Controllers Factory
     
@@ -43,21 +43,24 @@ extension AppDelegate: ViewControllersFactoryProtocol {
     }
     
     func createMemeEditorViewController() -> MemeEditorViewController {
-        let logicController 
-        
-        return memeEditorViewController
+        return MemeEditorViewController(nibName: MemeEditorViewController.className,
+                                        bundle: Bundle(for: MemeEditorViewController.self))
     }
     
     func createMyMemesViewController() -> MyMemesViewController {
+        let logicController = MyMemesLogicController(modelControllerFactory: self)
         
-        
-        return myMemesViewController
+        return MyMemesViewController(nibName: MyMemesViewController.className,
+                                     bundle: Bundle(for: MyMemesViewController.self),
+                                     logicController: logicController)
     }
     
-    func createDetailViewController() -> DetailViewController {
+    func createDetailViewController(modelController: MemeModelController) -> DetailViewController {
+        let logicController = DetailLogicController(modelController: modelController)
         
-        
-        return detailViewController
+        return DetailViewController(nibName: DetailViewController.className,
+                                    bundle: Bundle(for: DetailViewController.self),
+                                    logicController: logicController)
     }
     
 }

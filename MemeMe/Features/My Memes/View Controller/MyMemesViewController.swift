@@ -89,7 +89,7 @@ extension MyMemesViewController: UICollectionViewDelegate {
         collectionView.deselectItem(at: indexPath, animated: true)
         
         let selectedMemeModelController = logicController.modelController(for: indexPath.item)
-        let detailViewController = viewControllersFactory.createDetailViewController(memeModelController: selectedMemeModelController)
+        let detailViewController = viewControllersFactory.createDetailViewController(modelController: selectedMemeModelController)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
     

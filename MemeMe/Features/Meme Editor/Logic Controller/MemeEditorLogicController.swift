@@ -10,8 +10,5 @@ import Foundation
 
 class MemeEditorLogicController {
     
-    // MARK - Dependencies
-    
-    private let 
     
 }

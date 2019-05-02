@@ -29,6 +29,7 @@ protocol ViewControllersFactoryProtocol {
     
     /// Creates a configured instance of a DetailViewController.
     ///
+    /// - Parameter modelController: A model controller for a Meme object.
     /// - Returns: A configured DetailViewController.
-    func createDetailViewController() -> DetailViewController
+    func createDetailViewController(modelController: MemeModelController) -> DetailViewController
 }
