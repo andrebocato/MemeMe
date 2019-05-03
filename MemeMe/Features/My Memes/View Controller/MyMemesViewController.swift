@@ -33,9 +33,10 @@ class MyMemesViewController: UIViewController {
 
     init(nibName nibNameOrNil: String?,
          bundle nibBundleOrNil: Bundle?,
-         logicController: MyMemesLogicController) {
-        // @TODO: implement dependency injection
+         logicController: MyMemesLogicController,
+         viewControllersFactory: ViewControllersFactoryProtocol) {
         self.logicController = logicController
+        self.viewControllersFactory = viewControllersFactory
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -70,14 +71,18 @@ class MyMemesViewController: UIViewController {
         let actionSheet = UIAlertController(title: "Select an image source", message: nil, preferredStyle: .actionSheet)
         
         let cameraAction = UIAlertAction(title: "Camera", style: .default) { [weak self] (action) in
-            self?.presentImagePicker(.camera)
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                self?.presentImagePicker(.camera)
+            } else {
+                AlertHelper.showAlert(inController: self, title: "Could not complete action", message: "No available camera on your device.")
+            }
         }
         
         let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { [weak self] (action) in
             self?.presentImagePicker(.photoLibrary)
         }
         
-        let randomAction = UIAlertAction(title: "Random image", style: .default) { (action) in
+        let randomImageAction = UIAlertAction(title: "Random image", style: .default) { (action) in
             // @TODO: GET image from an API
         }
         
@@ -89,7 +94,7 @@ class MyMemesViewController: UIViewController {
         
         actionSheet.addAction(cameraAction)
         actionSheet.addAction(photoLibraryAction)
-        actionSheet.addAction(randomAction)
+        actionSheet.addAction(randomImageAction)
         actionSheet.addAction(cancelAction)
         
         DispatchQueue.main.async {
@@ -97,6 +102,9 @@ class MyMemesViewController: UIViewController {
         }
     }
     
+    /// Presents an image picker.
+    ///
+    /// - Parameter sourceType: Source type of the image picker to be presented.
     private func presentImagePicker(_ sourceType: UIImagePickerController.SourceType) {
         imagePicker.sourceType = sourceType
         
@@ -174,7 +182,7 @@ extension MyMemesViewController: UICollectionViewDelegateFlowLayout {
 
 }
 
-extension MyMemesViewController: UIImagePickerControllerDelegate {
+extension MyMemesViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: - Image Picker Controller Delegate
     
@@ -183,11 +191,27 @@ extension MyMemesViewController: UIImagePickerControllerDelegate {
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            let memeCreatorViewController = viewControllersFactory.createMemeCreatorViewController(originalImage: image)
-            navigationController?.pushViewController(memeCreatorViewController, animated: true)
+        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+            AlertHelper.showAlert(inController: self, title: "Oops!", message: "Something went wrong. Try again.")
+            dismiss(animated: true, completion: nil)
+            return
         }
-        dismiss(animated: true, completion: nil)
+        
+        let memeCreatorViewController = viewControllersFactory.createMemeCreatorViewController(originalImage: image)
+        navigationController?.pushViewController(memeCreatorViewController, animated: true)
+    }
+    
+}
+
+extension MyMemesViewController: MyMemesLogicControllerDelegate {
+    
+    // MARK: - Logic Controller Delegate
+    
+    func memesListDidUpdate() {
+        DispatchQueue.main.async {
+            self.collectionView.hideEmptyView()
+            self.collectionView.reloadData()
+        }
     }
     
 }

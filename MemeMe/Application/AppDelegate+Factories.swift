@@ -14,45 +14,27 @@ extension AppDelegate: ModelControllersFactoryProtocol {
     // MARK: - Model Controllers Factory
     
     func createMemeModelController(meme: Meme) -> MemeModelController {
-        return MemeModelController(meme: meme)
+        return MemeModelController(/*  */)
     }
     
 }
 
-extension AppDelegate: ViewControllersFactoryProtocol {    
-    
+extension AppDelegate: ViewControllersFactoryProtocol { 
+
     // MARK: - View Controllers Factory
     
-    func createTabBarController() -> UITabBarController {
-        // Meme Editor
-        let memeEditorViewController = createMemeEditorViewController()
-        memeEditorViewController.title = "Meme Editor"
-        memeEditorViewController.tabBarItem = UITabBarItem(title: "Meme Editor", image: UIImage(named: "editor"), tag: 0)
-        let memeEditorNavigationController = UINavigationController(rootViewController: memeEditorViewController)
-
-        // My Memes
-        let myMemesViewController = createMyMemesViewController()
-        myMemesViewController.title = "My Memes"
-        myMemesViewController.tabBarItem = UITabBarItem(title: "My Memes", image: UIImage(named: "memes"), tag: 1)
-        let myMemesNavigationController = UINavigationController(rootViewController: myMemesViewController)
-        
-        let tabBarController = UITabBarController()
-        tabBarController.setViewControllers([memeEditorNavigationController, myMemesNavigationController], animated: false)
-        
-        return tabBarController
-    }
-    
-    func createMemeEditorViewController() -> MemeEditorViewController {
-        return MemeEditorViewController(nibName: MemeEditorViewController.className,
-                                        bundle: Bundle(for: MemeEditorViewController.self))
+    func createMemeCreatorViewController(originalImage: UIImage) -> MemeCreatorViewController {
+        return MemeCreatorViewController(nibName: MemeCreatorViewController.className,
+                                         bundle: Bundle(for: MemeCreatorViewController.self),
+                                         originalImage: originalImage)
     }
     
     func createMyMemesViewController() -> MyMemesViewController {
         let logicController = MyMemesLogicController(modelControllerFactory: self)
-        
         return MyMemesViewController(nibName: MyMemesViewController.className,
                                      bundle: Bundle(for: MyMemesViewController.self),
-                                     logicController: logicController)
+                                     logicController: logicController,
+                                     viewControllersFactory: self)
     }
     
     func createDetailViewController(modelController: MemeModelController) -> DetailViewController {

@@ -12,6 +12,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MemeCreatorViewController" customModule="MemeMe" customModuleProvider="target">
             <connections>
+                <outlet property="bottomTextField" destination="qLT-S7-Cu4" id="KEc-sV-3fW"/>
+                <outlet property="imageView" destination="SCk-YT-MoZ" id="8xD-aJ-se0"/>
+                <outlet property="topTextField" destination="xBQ-ni-GI1" id="Fur-jV-756"/>
                 <outlet property="view" destination="0at-bf-4tc" id="Xst-0N-ayk"/>
             </connections>
         </placeholder>
@@ -20,68 +23,31 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lRh-bb-gVa">
-                    <rect key="frame" x="0.0" y="88" width="414" height="725"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SCk-YT-MoZ">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
-                            <color key="backgroundColor" red="0.99607843139999996" green="0.18823529410000001" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </imageView>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="TOP" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xBQ-ni-GI1">
-                            <rect key="frame" x="191" y="83" width="32" height="17"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                        </textField>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="BOTTOM" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qLT-S7-Cu4">
-                            <rect key="frame" x="175" y="625" width="64" height="17"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                        </textField>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="qLT-S7-Cu4" firstAttribute="top" secondItem="SCk-YT-MoZ" secondAttribute="bottom" constant="-100" id="4eh-p8-iZO"/>
-                        <constraint firstItem="qLT-S7-Cu4" firstAttribute="centerX" secondItem="lRh-bb-gVa" secondAttribute="centerX" id="VPo-sK-izu"/>
-                        <constraint firstItem="SCk-YT-MoZ" firstAttribute="top" secondItem="lRh-bb-gVa" secondAttribute="top" id="VWu-za-bv0"/>
-                        <constraint firstItem="SCk-YT-MoZ" firstAttribute="leading" secondItem="lRh-bb-gVa" secondAttribute="leading" id="YRo-UR-1dj"/>
-                        <constraint firstItem="SCk-YT-MoZ" firstAttribute="top" secondItem="xBQ-ni-GI1" secondAttribute="bottom" constant="-100" id="fff-xS-SFc"/>
-                        <constraint firstItem="xBQ-ni-GI1" firstAttribute="centerX" secondItem="lRh-bb-gVa" secondAttribute="centerX" id="hag-9d-Plg"/>
-                        <constraint firstAttribute="trailing" secondItem="SCk-YT-MoZ" secondAttribute="trailing" id="qka-HC-QdW"/>
-                        <constraint firstAttribute="bottom" secondItem="SCk-YT-MoZ" secondAttribute="bottom" id="w68-Gb-ld7"/>
-                    </constraints>
-                </view>
-                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wf7-jb-Kla">
-                    <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                    <items>
-                        <navigationItem title="MemeMe Editor" id="UCa-kw-EfQ" userLabel="MemeMe Editor">
-                            <barButtonItem key="leftBarButtonItem" systemItem="action" id="dlw-i2-R5d"/>
-                            <barButtonItem key="rightBarButtonItem" title="Cancel" id="iCG-VA-eZA"/>
-                        </navigationItem>
-                    </items>
-                </navigationBar>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="XMw-dJ-T95">
-                    <rect key="frame" x="0.0" y="813" width="414" height="49"/>
-                    <items>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="96V-1s-PBL"/>
-                        <barButtonItem systemItem="camera" id="iJL-FC-13r"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="rPQ-wm-XEV"/>
-                        <barButtonItem title="Album" id="SCc-bA-asM"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="6X5-Kl-ARp"/>
-                    </items>
-                </toolbar>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SCk-YT-MoZ">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </imageView>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="TOP TEXT" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xBQ-ni-GI1">
+                    <rect key="frame" x="172" y="127" width="70.5" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                </textField>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="BOTTOM TEXT" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qLT-S7-Cu4">
+                    <rect key="frame" x="156" y="762" width="102" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                </textField>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="Wf7-jb-Kla" firstAttribute="top" secondItem="qAJ-46-2H0" secondAttribute="top" id="57w-gq-fxa"/>
-                <constraint firstItem="Wf7-jb-Kla" firstAttribute="leading" secondItem="qAJ-46-2H0" secondAttribute="leading" id="Aaf-s4-kSQ"/>
-                <constraint firstItem="XMw-dJ-T95" firstAttribute="leading" secondItem="qAJ-46-2H0" secondAttribute="leading" id="CvR-gi-Pd4"/>
-                <constraint firstItem="XMw-dJ-T95" firstAttribute="top" secondItem="lRh-bb-gVa" secondAttribute="bottom" id="E3H-Vl-at7"/>
-                <constraint firstItem="qAJ-46-2H0" firstAttribute="bottom" secondItem="XMw-dJ-T95" secondAttribute="bottom" id="NQc-9h-GRn"/>
-                <constraint firstItem="lRh-bb-gVa" firstAttribute="top" secondItem="Wf7-jb-Kla" secondAttribute="bottom" id="RWK-FN-YeV"/>
-                <constraint firstItem="lRh-bb-gVa" firstAttribute="trailing" secondItem="qAJ-46-2H0" secondAttribute="trailing" id="amw-U6-r2J"/>
-                <constraint firstItem="qAJ-46-2H0" firstAttribute="leading" secondItem="lRh-bb-gVa" secondAttribute="leading" id="tgQ-Uq-vJ4"/>
-                <constraint firstItem="qAJ-46-2H0" firstAttribute="trailing" secondItem="XMw-dJ-T95" secondAttribute="trailing" id="uCo-HA-5e4"/>
-                <constraint firstItem="qAJ-46-2H0" firstAttribute="trailing" secondItem="Wf7-jb-Kla" secondAttribute="trailing" id="xO1-Or-anL"/>
+                <constraint firstItem="SCk-YT-MoZ" firstAttribute="top" secondItem="qAJ-46-2H0" secondAttribute="top" id="7vl-G2-mdA"/>
+                <constraint firstItem="qAJ-46-2H0" firstAttribute="trailing" secondItem="SCk-YT-MoZ" secondAttribute="trailing" id="Czn-Wl-pUA"/>
+                <constraint firstItem="SCk-YT-MoZ" firstAttribute="leading" secondItem="qAJ-46-2H0" secondAttribute="leading" id="Igw-af-aFI"/>
+                <constraint firstItem="SCk-YT-MoZ" firstAttribute="top" secondItem="xBQ-ni-GI1" secondAttribute="bottom" constant="-100" id="JGM-un-4qQ"/>
+                <constraint firstItem="qLT-S7-Cu4" firstAttribute="top" secondItem="SCk-YT-MoZ" secondAttribute="bottom" constant="-100" id="Kgc-7o-yS2"/>
+                <constraint firstItem="qAJ-46-2H0" firstAttribute="bottom" secondItem="SCk-YT-MoZ" secondAttribute="bottom" id="XhU-Sl-BdH"/>
+                <constraint firstItem="qLT-S7-Cu4" firstAttribute="centerX" secondItem="qAJ-46-2H0" secondAttribute="centerX" id="bXF-su-xnP"/>
+                <constraint firstItem="xBQ-ni-GI1" firstAttribute="centerX" secondItem="qAJ-46-2H0" secondAttribute="centerX" id="dd3-2t-DpJ"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="qAJ-46-2H0"/>
             <point key="canvasLocation" x="-4" y="157"/>

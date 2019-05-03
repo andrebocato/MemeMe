@@ -10,6 +10,14 @@ import Foundation
 
 class MemeCreatorLogicController {
     
+    // MARK: - Dependencies
     
+    private let modelController: MemeModelController
     
+    // MARK: - Initialization
+    
+    init(modelController: MemeModelController) {
+        self.modelController = modelController
+    }
+        
 }

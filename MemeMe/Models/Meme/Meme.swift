@@ -17,4 +17,6 @@ struct Meme {
     var originalImage: UIImage
     /// Image created from the original image with text over it.
     var memedImage: UIImage
+    /// Object identifier.
+    var id: String = UUID().uuidString
 }

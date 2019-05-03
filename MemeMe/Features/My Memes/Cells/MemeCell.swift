@@ -35,7 +35,7 @@ class MemeCell: UICollectionViewCell {
     // MARK: - Private Functions
     
     private func setupUI() {
-        imageView.image = modelController.meme.memedImage
+        imageView.image = modelController.meme.memedImage 
     }
     
 }

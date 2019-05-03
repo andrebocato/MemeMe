@@ -16,13 +16,18 @@ class MyMemesLogicController {
     
     // MARK: - Public Propeties
     
+    weak var delegate: MyMemesLogicControllerDelegate?
     var numberOfMemes: Int {
         return memes.count
     }
     
     // MARK: - Private Properties
     
-    private var memes: [Meme] = []
+    private var memes = MemeDatabase.shared.memes {
+        didSet {
+            delegate?.memesListDidUpdate()
+        }
+    }
     
     // MARK - Initialization
     
@@ -39,7 +44,5 @@ class MyMemesLogicController {
     func modelController(for item: Int) -> MemeModelController {
         return modelControllerFactory.createMemeModelController(meme: memes[item])
     }
-    
-    func selectImageSource(source:  )
-    
+
 }

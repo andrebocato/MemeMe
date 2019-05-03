@@ -9,15 +9,16 @@
 import Foundation
 
 class MemeModelController {
+        
+    // MARK: - Private Properties
     
-    // MARK: - Public Properties
+    var memes = [Meme]()
+    var meme: Meme!
     
-    let meme: Meme
+    // MARK: - Public Functions
     
-    // MARK: - Initialization
-    
-    init(meme: Meme) {
-        self.meme = meme
+    func createNew(_ meme: Meme) {
+        memes.append(meme)
     }
     
 }

@@ -20,7 +20,7 @@ class DetailViewController: UIViewController {
     
     // MARK: - Properties
     
-    let meme = Meme(topText: "", bottomText: "", originalImage: UIImage(), memedImage: UIimage())
+    let meme = MemeDatabase.shared.memes[0]
     
     // MARK: - Lifecycle
     
