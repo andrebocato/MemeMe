@@ -1,17 +1,19 @@
 //
-//  MemeEditorViewController.swift
+//  MemeCreatorViewController.swift
 //  MemeMe
 //
-//  Created by André Sanches Bocato on 07/11/18.
-//  Copyright © 2018 André Sanches Bocato. All rights reserved.
+//  Created by Andre Sanches Bocato on 03/05/19.
+//  Copyright © 2019 Andre Sanches Bocato. All rights reserved.
 //
-// @TODO: textfields should jump to other lines when text is too long
-// @TODO: center textField.text
 // @TODO: redo layout
 
 import UIKit
 
-class MemeEditorViewController: UIViewController {
+class MemeCreatorViewController: UIViewController {
+    
+    // MARK: - Dependencies
+    
+    private let originalImage: UIImage
     
     // MARK: - IBOutlets
     
@@ -38,9 +40,10 @@ class MemeEditorViewController: UIViewController {
     
     // MARK: - Initialization
     
-    override init(nibName nibNameOrNil: String?,
-                  bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    init(nibName nibNameOrNil: String?,
+         bundle nibBundleOrNil: Bundle?,
+         originalImage: UIImage) {
+        self.originalImage = originalImage
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -178,20 +181,5 @@ class MemeEditorViewController: UIViewController {
         .font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
         .strokeWidth: -5.0
     ]
-}
-
-// MARK: - Extensions
-
-extension MemeEditorViewController: UIImagePickerControllerDelegate {
-    
-    // MARK: - Image Picker Controller Delegate
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
     
 }
-
-extension MemeEditorViewController: UITextFieldDelegate { }
-
-extension MemeEditorViewController: UINavigationControllerDelegate { }

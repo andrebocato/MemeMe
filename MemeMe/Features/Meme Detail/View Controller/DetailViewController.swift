@@ -18,6 +18,10 @@ class DetailViewController: UIViewController {
     
     @IBOutlet private weak var imageView: UIImageView!
     
+    // MARK: - Properties
+    
+    let meme = Meme(topText: "", bottomText: "", originalImage: UIImage(), memedImage: UIimage())
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -59,38 +63,8 @@ class DetailViewController: UIViewController {
         navigationItem.rightBarButtonItem = barButtonItem
     }
     
-    private func showActionSheet() {
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        let editAction = UIAlertAction(title: "Edit", style: .default) { (action) in
-            // @TODO: send user to MemeEditorViewController
-        }
-        
-        let shareAction = UIAlertAction(title: "Share...", style: .default) { (action) in
-            // @TODO: implement
-        }
-        
-        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
-            // @TODO: implement
-        }
-        
-        actionSheet.addAction(editAction)
-        actionSheet.addAction(shareAction)
-        actionSheet.addAction(deleteAction)
-        
-        DispatchQueue.main.async {
-            self.present(actionSheet, animated: true, completion: nil)
-        }
-    }
-    
     private func showActivityView() {
-        let imageToShare: UIImage = generateMemedImage()
-        let activityViewController = UIActivityViewController(activityItems: [imageToShare], applicationActivities: [])
-        activityViewController.completionWithItemsHandler = { [weak self] (activityType, completed, returnedItems, error) in
-            if !completed { return }
-            self?.saveImage()
-        }
-        
+        let activityViewController = UIActivityViewController(activityItems: [meme.memedImage], applicationActivities: [])
         DispatchQueue.main.async {
             self.present(activityViewController, animated: true, completion: nil)
         }
@@ -99,7 +73,7 @@ class DetailViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func editBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
-        showActionSheet()
+        showActivityView()
     }
     
 }

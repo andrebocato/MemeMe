@@ -20,6 +20,4 @@ class MemeModelController {
         self.meme = meme
     }
     
-    // MARK: - 
-    
 }

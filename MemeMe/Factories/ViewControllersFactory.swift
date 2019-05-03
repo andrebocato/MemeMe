@@ -12,20 +12,21 @@ import UIKit
 /// This is an abstract factory for view controllers.
 protocol ViewControllersFactoryProtocol {
     
-    /// Creates a configured TabBarController.
+    /// Creates a configured instance of a MyMemesViewController.
     ///
-    /// - Returns: A configured UITabBarController.
-    func createTabBarController() -> UITabBarController
+    /// - Returns: A configured MyMemesViewController.
+    func createMyMemesViewController() -> MyMemesViewController
+    
+    /// Creates a configured instance of a MemeCreatorViewController.
+    ///
+    /// - Parameter originalImage: Image from the image picker to be worked on.
+    /// - Returns: A configured MemeCreatorViewController.
+    func createMemeCreatorViewController(originalImage: UIImage) -> MemeCreatorViewController
     
     /// Creates a configured instance of a MemeEditorViewController.
     ///
     /// - Returns: A configured MemeEditorViewController.
     func createMemeEditorViewController() -> MemeEditorViewController
-    
-    /// Creates a configured instance of a MyMemesViewController.
-    ///
-    /// - Returns: A configured MyMemesViewController.
-    func createMyMemesViewController() -> MyMemesViewController
     
     /// Creates a configured instance of a DetailViewController.
     ///

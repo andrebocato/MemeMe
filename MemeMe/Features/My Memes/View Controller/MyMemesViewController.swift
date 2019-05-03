@@ -27,6 +27,7 @@ class MyMemesViewController: UIViewController {
     // MARK: - Properties
     
     private let minimumSpacing: CGFloat = 3
+    private let imagePicker = UIImagePickerController()
     
     // MARK: - Initialization
 
@@ -46,7 +47,9 @@ class MyMemesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imagePicker.delegate = self as? (UIImagePickerControllerDelegate & UINavigationControllerDelegate)
         registerCollectionViewCells()
+        createBarButtonItem()
     }
     
     // MARK: - UI Configuration
@@ -58,6 +61,56 @@ class MyMemesViewController: UIViewController {
         collectionView.register(cellNib, forCellWithReuseIdentifier: className)
     }
     
+    private func createBarButtonItem() {
+        let barButtonItem = UIBarButtonItem(image: UIImage(named: "add"), style: .done, target: self, action: #selector(addNewMemeBarButtonItemDidReceiveTouchUpInside(_:)))
+        navigationItem.leftBarButtonItem = barButtonItem
+    }
+    
+    private func showActionSheet() {
+        let actionSheet = UIAlertController(title: "Select an image source", message: nil, preferredStyle: .actionSheet)
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { [weak self] (action) in
+            self?.presentImagePicker(.camera)
+        }
+        
+        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { [weak self] (action) in
+            self?.presentImagePicker(.photoLibrary)
+        }
+        
+        let randomAction = UIAlertAction(title: "Random image", style: .default) { (action) in
+            // @TODO: GET image from an API
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+        
+        actionSheet.addAction(cameraAction)
+        actionSheet.addAction(photoLibraryAction)
+        actionSheet.addAction(randomAction)
+        actionSheet.addAction(cancelAction)
+        
+        DispatchQueue.main.async {
+            self.present(actionSheet, animated: true, completion: nil)
+        }
+    }
+    
+    private func presentImagePicker(_ sourceType: UIImagePickerController.SourceType) {
+        imagePicker.sourceType = sourceType
+        
+        DispatchQueue.main.async {
+            self.present(self.imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func addNewMemeBarButtonItemDidReceiveTouchUpInside(_ sende: UIBarButtonItem) {
+        showActionSheet()
+    }
+    
 }
 
 // MARK: - Extensions
@@ -67,7 +120,14 @@ extension MyMemesViewController: UICollectionViewDataSource {
     // MARK: - Collection View Data Source
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return logicController.numberOfMemes
+        let numberOfMemes = logicController.numberOfMemes
+        if numberOfMemes == 0 {
+            collectionView.showEmptyView(message: "You haven't created any memes yet. Create some!")
+            return 0
+        } else {
+            collectionView.hideEmptyView()
+            return numberOfMemes
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -112,4 +172,22 @@ extension MyMemesViewController: UICollectionViewDelegateFlowLayout {
         return minimumSpacing
     }
 
+}
+
+extension MyMemesViewController: UIImagePickerControllerDelegate {
+    
+    // MARK: - Image Picker Controller Delegate
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            let memeCreatorViewController = viewControllersFactory.createMemeCreatorViewController(originalImage: image)
+            navigationController?.pushViewController(memeCreatorViewController, animated: true)
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
 }
