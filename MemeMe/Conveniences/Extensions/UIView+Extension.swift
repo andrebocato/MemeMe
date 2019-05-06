@@ -11,8 +11,9 @@ import UIKit
 
 // MARK: - Protocols
 
-protocol LoadableView { }
-protocol EmptiableView { }
+protocol Loadable { }
+protocol Emptiable { }
+protocol Printable { }
 
 // MARK: - Tags
 
@@ -21,7 +22,7 @@ fileprivate let emptyViewTag = 22222
 
 // MARK: - Loadable View
 
-extension UIView: LoadableView {
+extension UIView: Loadable {
     
     /// Presents a subview with an activity indicator in the middle.
     func startLoading(style: UIActivityIndicatorView.Style = .whiteLarge) {
@@ -57,7 +58,7 @@ extension UIView: LoadableView {
 
 // MARK: - Emptiable View
 
-extension UIView: EmptiableView {
+extension UIView: Emptiable {
     
     /// Shows a subview indicating the view is empty.
     ///
@@ -82,6 +83,22 @@ extension UIView: EmptiableView {
         DispatchQueue.main.async {
             self.viewWithTag(emptyViewTag)?.removeFromSuperview()
         }
+    }
+    
+}
+
+// MARK: - Printable View
+
+extension UIView: Printable {
+    
+    /// Generates an UIImage by printing the visible view content.
+    ///
+    /// - Returns: An UIImage containing the view content.
+    func asImage(bounds: CGRect) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+        return renderer.image(actions: { (rendererContext) in
+            layer.render(in: rendererContext.cgContext)
+        })
     }
     
 }

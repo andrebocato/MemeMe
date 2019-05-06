@@ -9,40 +9,28 @@
 import Foundation
 import UIKit
 
-extension AppDelegate: ModelControllersFactoryProtocol {
-    
-    // MARK: - Model Controllers Factory
-    
-    func createMemeModelController(meme: Meme) -> MemeModelController {
-        return MemeModelController(/*  */)
-    }
-    
-}
-
-extension AppDelegate: ViewControllersFactoryProtocol { 
+extension AppDelegate: ViewControllersFactoryProtocol {
 
     // MARK: - View Controllers Factory
     
-    func createMemeCreatorViewController(originalImage: UIImage) -> MemeCreatorViewController {
+    func createMemeCreatorViewController(originalImage: UIImage, modelController: MemeModelController) -> MemeCreatorViewController {
         return MemeCreatorViewController(nibName: MemeCreatorViewController.className,
                                          bundle: Bundle(for: MemeCreatorViewController.self),
-                                         originalImage: originalImage)
+                                         originalImage: originalImage,
+                                         modelController: modelController)
     }
     
-    func createMyMemesViewController() -> MyMemesViewController {
-        let logicController = MyMemesLogicController(modelControllerFactory: self)
+    func createMyMemesViewController(modelController: MemeModelController) -> MyMemesViewController {
         return MyMemesViewController(nibName: MyMemesViewController.className,
                                      bundle: Bundle(for: MyMemesViewController.self),
-                                     logicController: logicController,
-                                     viewControllersFactory: self)
+                                     viewControllersFactory: self,
+                                     modelController: modelController)
     }
     
-    func createDetailViewController(modelController: MemeModelController) -> DetailViewController {
-        let logicController = DetailLogicController(modelController: modelController)
-        
+    func createDetailViewController(memedImage: UIImage) -> DetailViewController {
         return DetailViewController(nibName: DetailViewController.className,
                                     bundle: Bundle(for: DetailViewController.self),
-                                    logicController: logicController)
+                                    memedImage: memedImage)
     }
     
 }

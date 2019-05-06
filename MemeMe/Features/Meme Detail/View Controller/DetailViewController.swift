@@ -12,15 +12,15 @@ class DetailViewController: UIViewController {
 
     // MARK: - Dependencies
     
-    private let logicController: DetailLogicController
+    private let memedImage: UIImage
     
     // MARK: - IBOutlets
     
-    @IBOutlet private weak var imageView: UIImageView!
-    
-    // MARK: - Properties
-    
-    let meme = MemeDatabase.shared.memes[0]
+    @IBOutlet private weak var imageView: UIImageView! {
+        didSet {
+            imageView.image = memedImage
+        }
+    }
     
     // MARK: - Lifecycle
     
@@ -29,22 +29,12 @@ class DetailViewController: UIViewController {
         createBarButtonItem()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.tabBarController?.tabBar.isHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.tabBarController?.tabBar.isHidden = false
-    }
-    
     // MARK: - Initialization
     
     init(nibName nibNameOrNil: String?,
          bundle nibBundleOrNil: Bundle?,
-         logicController: DetailLogicController) {
-        self.logicController = logicController
+         memedImage: UIImage) {
+        self.memedImage = memedImage
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -54,17 +44,17 @@ class DetailViewController: UIViewController {
     
     // MARK: - UI Configuration
     
-    private func setupUI() {
-        // @TODO: implement
-    }
-    
     private func createBarButtonItem() {
-        let barButtonItem = UIBarButtonItem(image: UIImage(named: "edit"), style: .done, target: self, action: #selector(editBarButtonItemDidReceiveTouchUpInside(_:)))
-        navigationItem.rightBarButtonItem = barButtonItem
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "share"),
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(shareBarButtonItemDidReceiveTouchUpInside(_:)))
     }
     
     private func showActivityView() {
-        let activityViewController = UIActivityViewController(activityItems: [meme.memedImage], applicationActivities: [])
+        let activityViewController = UIActivityViewController(activityItems: [memedImage],
+                                                              applicationActivities: [])
+        
         DispatchQueue.main.async {
             self.present(activityViewController, animated: true, completion: nil)
         }
@@ -72,7 +62,7 @@ class DetailViewController: UIViewController {
     
     // MARK: - Actions
     
-    @objc private func editBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
+    @objc private func shareBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
         showActivityView()
     }
     

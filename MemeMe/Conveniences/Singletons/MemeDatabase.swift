@@ -5,6 +5,7 @@
 //  Created by Andre Sanches Bocato on 03/05/19.
 //  Copyright © 2019 Andre Sanches Bocato. All rights reserved.
 //
+// @TODO: remove singleton
 
 import Foundation
 import UIKit

@@ -14,6 +14,7 @@ class MemeCreatorViewController: UIViewController {
     // MARK: - Dependencies
     
     private let originalImage: UIImage
+    private let modelController: MemeModelController
     
     // MARK: - IBOutlets
     
@@ -25,8 +26,10 @@ class MemeCreatorViewController: UIViewController {
     
     init(nibName nibNameOrNil: String?,
          bundle nibBundleOrNil: Bundle?,
-         originalImage: UIImage) {
+         originalImage: UIImage,
+         modelController: MemeModelController) {
         self.originalImage = originalImage
+        self.modelController = modelController
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -56,7 +59,7 @@ class MemeCreatorViewController: UIViewController {
     private func setupUI() {
         createBarButtonItems()
         configureImageView()
-        configureTexFields([topTextField, bottomTextField])
+        configureTextFields([topTextField, bottomTextField])
     }
     
     private func configureImageView() {
@@ -67,45 +70,51 @@ class MemeCreatorViewController: UIViewController {
     /// Configures text fields text attributes, settings and delegates.
     ///
     /// - Parameter textFields: An array of UITextFields to be configured.
-    private func configureTexFields(_ textFields: [UITextField]) {
+    private func configureTextFields(_ textFields: [UITextField]) {
         for textField in textFields {
             textField.delegate = self
-            textField.autocapitalizationType = .allCharacters
-            textField.defaultTextAttributes = memeTextAttributes
+            textField.defaultTextAttributes = [
+                .strokeColor: UIColor.black,
+                .foregroundColor: UIColor.white,
+                .font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+                .strokeWidth: -5.0 // magic number. a negative float value corrected a previous bug and i don't know why
+            ]
         }
     }
     
     private func createBarButtonItems() {
-        let finishBarButtonItem = UIBarButtonItem(image: UIImage(named: "done"), style: .done, target: self, action: #selector(finishBarButtonItemDidReceiveTouchUpInside(_:)))
-        navigationItem.rightBarButtonItem = finishBarButtonItem
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "done"),
+                                                           style: .done,
+                                                           target: self,
+                                                           action: #selector(finishBarButtonItemDidReceiveTouchUpInside(_:)))
         
-        let discardBarButtonItem = UIBarButtonItem(image: UIImage(named: "discard"), style: .done, target: self, action: #selector(discardBarButtonItemDidReceiveTouchUpInside(_:)))
-        navigationItem.leftBarButtonItem = discardBarButtonItem
-    }
-    
-    // @TODO: refactor. there must be a better way to do this
-    private func generateMemedImage() -> UIImage {
-        UIGraphicsBeginImageContext(view.frame.size)
-        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
-        let imageFromPrintScreen = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        
-        return imageFromPrintScreen
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "discard"),
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(discardBarButtonItemDidReceiveTouchUpInside(_:)))
     }
     
     // MARK: - Actions
     
     @objc private func finishBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
-        let newMeme = Meme(topText: topTextField.text ?? "", bottomText: bottomTextField.text ?? "", originalImage: originalImage, memedImage: generateMemedImage(), id: UUID().uuidString)
-//        let modelController = logicController
-//        modelController.createNew(newMeme)
+        let printScreen = view.asImage(bounds: imageView.bounds) // @TODO: fix white bars on produced image
+        let newMeme = Meme(topText: topTextField.text ?? "",
+                           bottomText: bottomTextField.text ?? "",
+                           originalImage: originalImage,
+                           memedImage: printScreen,
+                           id: UUID().uuidString)
+
+        modelController.createNew(newMeme)
         navigationController?.popViewController(animated: true)
     }
     
     @objc private func discardBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
-        AlertHelper.showAlert(inController: self, title: "Are you sure?", message: "This action cannot be undone.", rightAction: UIAlertAction(title: "Discard", style: .destructive, handler: { [weak self] (action) in
-            self?.navigationController?.popViewController(animated: true)
-        }))
+        AlertHelper.showAlert(inController: self,
+                              title: "Are you sure?",
+                              message: "This action cannot be undone.",
+                              rightAction: UIAlertAction(title: "Discard", style: .destructive, handler: { [weak self] (action) in
+                                self?.navigationController?.popViewController(animated: true)
+                              }))
     }
     
     // MARK: - Attributed Text Attributes
@@ -119,31 +128,32 @@ class MemeCreatorViewController: UIViewController {
     
     // MARK: - Keyboard Hiding Functions
     
-    // from legacy code
+    // legacy code
     @objc func keyboardWillShow(_ notification: Notification) {
         if bottomTextField.isEditing {
             view.frame.origin.y = -getKeyboardHeight(notification)
         }
     }
     
-    // from legacy code
+    // legacy code
     @objc func keyboardWillHide(_ notification: Notification) {
         view.frame.origin.y = 0
     }
     
+    // legacy code
     private func getKeyboardHeight(_ notification: Notification) -> CGFloat {
         let userInfo = notification.userInfo
         let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue // of CGRect
         return keyboardSize.cgRectValue.height
     }
     
-    // from legacy code
+    // legacy code
     private func subscribeToKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    // from legacy code
+    // legacy code
     private func unsubscribeFromKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -155,11 +165,9 @@ extension MemeCreatorViewController: UITextFieldDelegate {
     
     // MARK: - UITextField Delegate
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == topTextField {
-            textField.resignFirstResponder()
-            bottomTextField.becomeFirstResponder()
-        }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
 }

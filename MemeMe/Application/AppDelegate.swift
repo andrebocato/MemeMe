@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let myMemesViewController = createMyMemesViewController()
+        let myMemesViewController = createMyMemesViewController(modelController: MemeModelController())
         let rootViewController = UINavigationController(rootViewController: myMemesViewController)
         
         window = UIWindow()

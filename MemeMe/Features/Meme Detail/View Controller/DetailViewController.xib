@@ -27,10 +27,10 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="aRD-Wh-6o5" secondAttribute="bottom" id="Ado-X7-Lzn"/>
-                <constraint firstItem="aRD-Wh-6o5" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Q7o-BG-Hq2"/>
-                <constraint firstItem="aRD-Wh-6o5" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="TH5-DY-kmQ"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="aRD-Wh-6o5" secondAttribute="trailing" id="nsg-SK-XJu"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="aRD-Wh-6o5" secondAttribute="bottom" id="2GD-aY-irZ"/>
+                <constraint firstItem="aRD-Wh-6o5" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="CKb-37-mYE"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="aRD-Wh-6o5" secondAttribute="trailing" id="roX-dV-yEa"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="top" secondItem="aRD-Wh-6o5" secondAttribute="top" id="tXM-kT-uur"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>

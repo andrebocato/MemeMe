@@ -12,8 +12,8 @@ class MyMemesViewController: UIViewController {
 
     // MARK: - Dependencies
     
-    private let logicController: MyMemesLogicController
     private let viewControllersFactory: ViewControllersFactoryProtocol
+    private let modelController: MemeModelController
     
     // MARK: - IBOutlets
     
@@ -33,10 +33,10 @@ class MyMemesViewController: UIViewController {
 
     init(nibName nibNameOrNil: String?,
          bundle nibBundleOrNil: Bundle?,
-         logicController: MyMemesLogicController,
-         viewControllersFactory: ViewControllersFactoryProtocol) {
-        self.logicController = logicController
+         viewControllersFactory: ViewControllersFactoryProtocol,
+         modelController: MemeModelController) {
         self.viewControllersFactory = viewControllersFactory
+        self.modelController = modelController
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -48,12 +48,21 @@ class MyMemesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imagePicker.delegate = self as? (UIImagePickerControllerDelegate & UINavigationControllerDelegate)
+        imagePicker.delegate = self
         registerCollectionViewCells()
-        createBarButtonItem()
+        setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.reloadData()
     }
     
     // MARK: - UI Configuration
+    
+    private func setupUI() {
+        setupNavigationBar()
+    }
     
     private func registerCollectionViewCells() {
         let bundle = Bundle(for: MemeCell.self)
@@ -62,28 +71,31 @@ class MyMemesViewController: UIViewController {
         collectionView.register(cellNib, forCellWithReuseIdentifier: className)
     }
     
-    private func createBarButtonItem() {
-        let barButtonItem = UIBarButtonItem(image: UIImage(named: "add"), style: .done, target: self, action: #selector(addNewMemeBarButtonItemDidReceiveTouchUpInside(_:)))
-        navigationItem.leftBarButtonItem = barButtonItem
+    private func setupNavigationBar() {
+        navigationItem.title = "Meme Me"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "add"),
+                                                           style: .done,
+                                                           target: self,
+                                                           action: #selector(addNewMemeBarButtonItemDidReceiveTouchUpInside(_:)))
     }
     
-    private func showActionSheet() {
+    // MARK: - UI Helper Functions
+    
+    private func presentActionSheet() {
         let actionSheet = UIAlertController(title: "Select an image source", message: nil, preferredStyle: .actionSheet)
         
         let cameraAction = UIAlertAction(title: "Camera", style: .default) { [weak self] (action) in
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
                 self?.presentImagePicker(.camera)
             } else {
-                AlertHelper.showAlert(inController: self, title: "Could not complete action", message: "No available camera on your device.")
+                AlertHelper.showAlert(inController: self,
+                                      title: "Could not complete action",
+                                      message: "No available camera on your device.")
             }
         }
         
         let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { [weak self] (action) in
             self?.presentImagePicker(.photoLibrary)
-        }
-        
-        let randomImageAction = UIAlertAction(title: "Random image", style: .default) { (action) in
-            // @TODO: GET image from an API
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
@@ -94,7 +106,6 @@ class MyMemesViewController: UIViewController {
         
         actionSheet.addAction(cameraAction)
         actionSheet.addAction(photoLibraryAction)
-        actionSheet.addAction(randomImageAction)
         actionSheet.addAction(cancelAction)
         
         DispatchQueue.main.async {
@@ -115,8 +126,8 @@ class MyMemesViewController: UIViewController {
     
     // MARK: - Actions
     
-    @objc private func addNewMemeBarButtonItemDidReceiveTouchUpInside(_ sende: UIBarButtonItem) {
-        showActionSheet()
+    @objc private func addNewMemeBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
+        presentActionSheet()
     }
     
 }
@@ -128,22 +139,19 @@ extension MyMemesViewController: UICollectionViewDataSource {
     // MARK: - Collection View Data Source
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let numberOfMemes = logicController.numberOfMemes
+        let numberOfMemes = modelController.memesCount 
         if numberOfMemes == 0 {
-            collectionView.showEmptyView(message: "You haven't created any memes yet. Create some!")
+            view.showEmptyView(message: "You haven't created any memes yet. Create some!")
             return 0
         } else {
-            collectionView.hideEmptyView()
+            view.hideEmptyView()
             return numberOfMemes
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemeCell.className, for: indexPath) as? MemeCell else { return UICollectionViewCell() }
-        
-        let modelController = logicController.modelController(for: indexPath.item)
-        cell.configure(with: modelController)
-        
+        cell.configure(with: modelController.memes[indexPath.row].memedImage)
         return cell
     }
     
@@ -156,8 +164,8 @@ extension MyMemesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        let selectedMemeModelController = logicController.modelController(for: indexPath.item)
-        let detailViewController = viewControllersFactory.createDetailViewController(modelController: selectedMemeModelController)
+        let memedImage = modelController.memes[indexPath.item].memedImage
+        let detailViewController = viewControllersFactory.createDetailViewController(memedImage: memedImage)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
     
@@ -192,26 +200,16 @@ extension MyMemesViewController: UIImagePickerControllerDelegate, UINavigationCo
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
-            AlertHelper.showAlert(inController: self, title: "Oops!", message: "Something went wrong. Try again.")
+            AlertHelper.showAlert(inController: self,
+                                  title: "Oops!",
+                                  message: "Something went wrong. Try again.")
             dismiss(animated: true, completion: nil)
             return
         }
         
-        let memeCreatorViewController = viewControllersFactory.createMemeCreatorViewController(originalImage: image)
+        let memeCreatorViewController = viewControllersFactory.createMemeCreatorViewController(originalImage: image, modelController: modelController)
+        dismiss(animated: true, completion: nil)
         navigationController?.pushViewController(memeCreatorViewController, animated: true)
-    }
-    
-}
-
-extension MyMemesViewController: MyMemesLogicControllerDelegate {
-    
-    // MARK: - Logic Controller Delegate
-    
-    func memesListDidUpdate() {
-        DispatchQueue.main.async {
-            self.collectionView.hideEmptyView()
-            self.collectionView.reloadData()
-        }
     }
     
 }

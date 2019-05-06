@@ -25,32 +25,31 @@
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SCk-YT-MoZ">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </imageView>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="TOP TEXT" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xBQ-ni-GI1">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="TOP TEXT" textAlignment="center" clearsOnBeginEditing="YES" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xBQ-ni-GI1">
                     <rect key="frame" x="172" y="127" width="70.5" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                 </textField>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="BOTTOM TEXT" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qLT-S7-Cu4">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="BOTTOM TEXT" textAlignment="center" clearsOnBeginEditing="YES" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qLT-S7-Cu4">
                     <rect key="frame" x="156" y="762" width="102" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                 </textField>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="qAJ-46-2H0" firstAttribute="bottom" secondItem="SCk-YT-MoZ" secondAttribute="bottom" id="2eX-60-eyq"/>
                 <constraint firstItem="SCk-YT-MoZ" firstAttribute="top" secondItem="qAJ-46-2H0" secondAttribute="top" id="7vl-G2-mdA"/>
                 <constraint firstItem="qAJ-46-2H0" firstAttribute="trailing" secondItem="SCk-YT-MoZ" secondAttribute="trailing" id="Czn-Wl-pUA"/>
                 <constraint firstItem="SCk-YT-MoZ" firstAttribute="leading" secondItem="qAJ-46-2H0" secondAttribute="leading" id="Igw-af-aFI"/>
                 <constraint firstItem="SCk-YT-MoZ" firstAttribute="top" secondItem="xBQ-ni-GI1" secondAttribute="bottom" constant="-100" id="JGM-un-4qQ"/>
                 <constraint firstItem="qLT-S7-Cu4" firstAttribute="top" secondItem="SCk-YT-MoZ" secondAttribute="bottom" constant="-100" id="Kgc-7o-yS2"/>
-                <constraint firstItem="qAJ-46-2H0" firstAttribute="bottom" secondItem="SCk-YT-MoZ" secondAttribute="bottom" id="XhU-Sl-BdH"/>
                 <constraint firstItem="qLT-S7-Cu4" firstAttribute="centerX" secondItem="qAJ-46-2H0" secondAttribute="centerX" id="bXF-su-xnP"/>
                 <constraint firstItem="xBQ-ni-GI1" firstAttribute="centerX" secondItem="qAJ-46-2H0" secondAttribute="centerX" id="dd3-2t-DpJ"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="qAJ-46-2H0"/>
-            <point key="canvasLocation" x="-4" y="157"/>
+            <point key="canvasLocation" x="-4.3478260869565224" y="156.69642857142856"/>
         </view>
     </objects>
 </document>

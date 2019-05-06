@@ -17,25 +17,14 @@ class MemeCell: UICollectionViewCell {
             imageView.layer.cornerRadius = 8.0
         }
     }
-
-    // MARK: - Private Properties
-    
-    private var modelController: MemeModelController!
     
     // MARK: - Functions
     
-    /// Configures the cell with data.
+    /// Configures the selected cell with an image.
     ///
-    /// - Parameter modelController: The model controller to get the data from.
-    func configure(with modelController: MemeModelController) {
-        self.modelController = modelController
-        setupUI()
-    }
-
-    // MARK: - Private Functions
-    
-    private func setupUI() {
-        imageView.image = modelController.meme.memedImage 
+    /// - Parameter image: The UIImage to be shown.
+    func configure(with image: UIImage) {
+        imageView.image = image
     }
     
 }
