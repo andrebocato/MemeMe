@@ -18,5 +18,4 @@ struct DependencyInjection {
     // MARK: - Public Properties
     
     public static let memeDatabase = MemeDatabase()
-    
 }
