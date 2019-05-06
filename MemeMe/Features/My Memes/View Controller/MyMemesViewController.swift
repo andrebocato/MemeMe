@@ -81,38 +81,6 @@ class MyMemesViewController: UIViewController {
     
     // MARK: - UI Helper Functions
     
-    private func presentActionSheet() {
-        let actionSheet = UIAlertController(title: "Select an image source", message: nil, preferredStyle: .actionSheet)
-        
-        let cameraAction = UIAlertAction(title: "Camera", style: .default) { [weak self] (action) in
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                self?.presentImagePicker(.camera)
-            } else {
-                AlertHelper.showAlert(inController: self,
-                                      title: "Could not complete action",
-                                      message: "No available camera on your device.")
-            }
-        }
-        
-        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { [weak self] (action) in
-            self?.presentImagePicker(.photoLibrary)
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            DispatchQueue.main.async {
-                self.dismiss(animated: true, completion: nil)
-            }
-        }
-        
-        actionSheet.addAction(cameraAction)
-        actionSheet.addAction(photoLibraryAction)
-        actionSheet.addAction(cancelAction)
-        
-        DispatchQueue.main.async {
-            self.present(actionSheet, animated: true, completion: nil)
-        }
-    }
-    
     /// Presents an image picker.
     ///
     /// - Parameter sourceType: Source type of the image picker to be presented.
@@ -127,7 +95,17 @@ class MyMemesViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func addNewMemeBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
-        presentActionSheet()
+        AlertHelper.presentActionSheet(inController: self,
+                                       title: "Choose an image source",
+                                       message: nil,
+                                       actions: [
+                                        UIAlertAction(title: "Camera", style: .default) { [weak self] (action) in
+                                            UIImagePickerController.isSourceTypeAvailable(.camera) ? self?.presentImagePicker(.camera) : AlertHelper.presentAlert(inController: self, title: "Could not complete action", message: "No available camera on your device.")
+                                        },
+                                        
+                                        UIAlertAction(title: "Photo Library", style: .default) { [weak self] (action) in
+                                            self?.presentImagePicker(.photoLibrary)
+                                        }])
     }
     
 }
@@ -151,7 +129,7 @@ extension MyMemesViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemeCell.className, for: indexPath) as? MemeCell else { return UICollectionViewCell() }
-        cell.configure(with: modelController.memes[indexPath.row].memedImage)
+        cell.configure(with: modelController.memes[indexPath.row].memedImageData)
         return cell
     }
     
@@ -164,8 +142,8 @@ extension MyMemesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        let memedImage = modelController.memes[indexPath.item].memedImage
-        let detailViewController = viewControllersFactory.createDetailViewController(memedImage: memedImage)
+        let memedImageData = modelController.memes[indexPath.item].memedImageData
+        let detailViewController = viewControllersFactory.createDetailViewController(memedImageData: memedImageData)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
     
@@ -199,15 +177,15 @@ extension MyMemesViewController: UIImagePickerControllerDelegate, UINavigationCo
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
-            AlertHelper.showAlert(inController: self,
+        guard let imageData = info[UIImagePickerController.InfoKey.originalImage] as? Data else {
+            AlertHelper.presentAlert(inController: self,
                                   title: "Oops!",
                                   message: "Something went wrong. Try again.")
             dismiss(animated: true, completion: nil)
             return
         }
         
-        let memeCreatorViewController = viewControllersFactory.createMemeCreatorViewController(originalImage: image, modelController: modelController)
+        let memeCreatorViewController = viewControllersFactory.createMemeCreatorViewController(originalImageData: imageData, modelController: modelController)
         dismiss(animated: true, completion: nil)
         navigationController?.pushViewController(memeCreatorViewController, animated: true)
     }

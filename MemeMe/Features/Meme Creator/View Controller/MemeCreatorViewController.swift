@@ -13,7 +13,7 @@ class MemeCreatorViewController: UIViewController {
     
     // MARK: - Dependencies
     
-    private let originalImage: UIImage
+    private let originalImageData: Data
     private let modelController: MemeModelController
     
     // MARK: - IBOutlets
@@ -26,9 +26,9 @@ class MemeCreatorViewController: UIViewController {
     
     init(nibName nibNameOrNil: String?,
          bundle nibBundleOrNil: Bundle?,
-         originalImage: UIImage,
+         originalImageData: Data,
          modelController: MemeModelController) {
-        self.originalImage = originalImage
+        self.originalImageData = originalImageData
         self.modelController = modelController
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -63,7 +63,7 @@ class MemeCreatorViewController: UIViewController {
     }
     
     private func configureImageView() {
-        imageView.image = originalImage
+        imageView.image = UIImage(data: originalImageData)
     }
     
     
@@ -97,11 +97,11 @@ class MemeCreatorViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func finishBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
-        let printScreen = view.asImage(bounds: imageView.bounds) // @TODO: fix white bars on produced image
+        guard let printScreenData = view.asImageData(bounds: imageView.bounds) else { return } // @TODO: fix white bars on produced image
         let newMeme = Meme(topText: topTextField.text ?? "",
                            bottomText: bottomTextField.text ?? "",
-                           originalImage: originalImage,
-                           memedImage: printScreen,
+                           originalImageData: originalImageData,
+                           memedImageData: printScreenData,
                            id: UUID().uuidString)
 
         modelController.createNew(newMeme)
@@ -109,7 +109,7 @@ class MemeCreatorViewController: UIViewController {
     }
     
     @objc private func discardBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
-        AlertHelper.showAlert(inController: self,
+        AlertHelper.presentAlert(inController: self,
                               title: "Are you sure?",
                               message: "This action cannot be undone.",
                               rightAction: UIAlertAction(title: "Discard", style: .destructive, handler: { [weak self] (action) in

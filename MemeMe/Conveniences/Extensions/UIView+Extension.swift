@@ -91,14 +91,14 @@ extension UIView: Emptiable {
 
 extension UIView: Printable {
     
-    /// Generates an UIImage by printing the visible view content.
+    /// Generates an image data by printing the visible view content.
     ///
-    /// - Returns: An UIImage containing the view content.
-    func asImage(bounds: CGRect) -> UIImage {
-        let renderer = UIGraphicsImageRenderer(bounds: bounds)
-        return renderer.image(actions: { (rendererContext) in
+    /// - Returns: Image data of the view content.
+    func asImageData(bounds: CGRect) -> Data? {
+        let image = UIGraphicsImageRenderer(bounds: bounds).image(actions: { (rendererContext) in
             layer.render(in: rendererContext.cgContext)
         })
+        return image.pngData()
     }
     
 }

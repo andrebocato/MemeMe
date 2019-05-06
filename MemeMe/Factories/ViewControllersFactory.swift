@@ -20,14 +20,14 @@ protocol ViewControllersFactoryProtocol {
     
     /// Creates a configured instance of a MemeCreatorViewController.
     ///
-    /// - Parameter originalImage: Image from the image picker to be worked on.
+    /// - Parameter originalImageData: Image data from the image picker to be worked on.
     /// - Parameter modelController: A MemeModelController to be use on the view controller.
     /// - Returns: A configured MemeCreatorViewController.
-    func createMemeCreatorViewController(originalImage: UIImage, modelController: MemeModelController) -> MemeCreatorViewController
+    func createMemeCreatorViewController(originalImageData: Data, modelController: MemeModelController) -> MemeCreatorViewController
         
     /// Creates a configured instance of a DetailViewController.
     ///
-    /// - Parameter memedImage: The meme image created.
+    /// - Parameter memedImageData: Image data from the created meme to be worked on.
     /// - Returns: A configured DetailViewController.
-    func createDetailViewController(memedImage: UIImage) -> DetailViewController
+    func createDetailViewController(memedImageData: Data) -> DetailViewController
 }

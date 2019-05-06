@@ -14,9 +14,9 @@ class AlertHelper {
     
     private init() {}
     
-    // MARK: - Functions
+    // MARK: - Alerts
     
-    /// Presents an Alert Controller with cancel and destructive actions.
+    /// Presents an alert with 'cancel' and 'destructive' actions.
     ///
     /// - Parameters:
     ///   - controller: View Controller where the alert will be presented.
@@ -24,11 +24,11 @@ class AlertHelper {
     ///   - message: Optional message to be displayed in the alert.
     ///   - rightAction: Main action of the alert.
     ///   - completionHandler: Closure to be executed right after presenting the alert.
-    static func showAlert(inController controller: UIViewController?,
-                          title: String,
-                          message: String?,
-                          rightAction: UIAlertAction,
-                          completionHandler: (() -> Void)? = nil) {
+    static func presentAlert(inController controller: UIViewController?,
+                             title: String,
+                             message: String?,
+                             rightAction: UIAlertAction,
+                             completionHandler: (() -> Void)? = nil) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
@@ -45,17 +45,17 @@ class AlertHelper {
         
     }
     
-    /// Presents an Alert Controller with an alert message.
+    /// Presents an alert with an alert message and an 'ok' button.
     ///
     /// - Parameters:
     ///   - controller: View Controller where the alert will be presented.
     ///   - title: Title to be displayed in the alert.
     ///   - message: Optional message to be displayed in the alert.
     ///   - completionHandler: Closure to be executed right after presenting the alert.
-    static func showAlert(inController controller: UIViewController?,
-                          title: String,
-                          message: String?,
-                          completionHandler: (() -> Void)? = nil) {
+    static func presentAlert(inController controller: UIViewController?,
+                             title: String,
+                             message: String?,
+                             completionHandler: (() -> Void)? = nil) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
@@ -67,5 +67,36 @@ class AlertHelper {
         DispatchQueue.main.async {
             controller?.present(alert, animated: true, completion: completionHandler)
         }
+    }
+    
+    // MARK: - Action Sheets
+    
+    /// Presents an action sheet with a set of custom actions.
+    ///
+    /// - Parameters:
+    ///   - controller: View Controller where the action sheet will be presented.
+    ///   - title: Optional title to be displayer in the action sheet.
+    ///   - message: Optional message to be displayed in the action sheet.
+    ///   - actions: An array of UIAlertActions to be added to the action sheet.
+    static func presentActionSheet(inController controller: UIViewController?,
+                                   title: String?,
+                                   message: String?,
+                                   actions: [UIAlertAction]) {
+        
+        let actionSheet = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        
+        for action in actions {
+            actionSheet.addAction(action)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            actionSheet.dismiss(animated: true, completion: nil)
+        }
+        actionSheet.addAction(cancelAction)
+        
+        DispatchQueue.main.async {
+            controller?.present(actionSheet, animated: true, completion: nil)
+        }
+        
     }
 }

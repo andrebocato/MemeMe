@@ -22,9 +22,9 @@ class MemeCell: UICollectionViewCell {
     
     /// Configures the selected cell with an image.
     ///
-    /// - Parameter image: The UIImage to be shown.
-    func configure(with image: UIImage) {
-        imageView.image = image
+    /// - Parameter imageData: The image data to populate the image view.
+    func configure(with imageData: Data) {
+        imageView.image = UIImage(data: imageData)
     }
     
 }

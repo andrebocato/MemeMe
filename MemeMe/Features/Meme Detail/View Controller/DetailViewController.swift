@@ -5,6 +5,7 @@
 //  Created by Andre Sanches Bocato on 02/05/19.
 //  Copyright © 2019 Andre Sanches Bocato. All rights reserved.
 //
+// @TODO: implement export quality options
 
 import UIKit
 
@@ -12,13 +13,13 @@ class DetailViewController: UIViewController {
 
     // MARK: - Dependencies
     
-    private let memedImage: UIImage
+    private let memedImageData: Data
     
     // MARK: - IBOutlets
     
     @IBOutlet private weak var imageView: UIImageView! {
         didSet {
-            imageView.image = memedImage
+            imageView.image = UIImage(data: memedImageData)
         }
     }
     
@@ -33,8 +34,8 @@ class DetailViewController: UIViewController {
     
     init(nibName nibNameOrNil: String?,
          bundle nibBundleOrNil: Bundle?,
-         memedImage: UIImage) {
-        self.memedImage = memedImage
+         memedImageData: Data) {
+        self.memedImageData = memedImageData
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -52,7 +53,8 @@ class DetailViewController: UIViewController {
     }
     
     private func showActivityView() {
-        let activityViewController = UIActivityViewController(activityItems: [memedImage],
+        let imageToShare = UIImage(data: memedImageData)
+        let activityViewController = UIActivityViewController(activityItems: [imageToShare!],
                                                               applicationActivities: [])
         
         DispatchQueue.main.async {

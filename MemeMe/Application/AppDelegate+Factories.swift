@@ -13,10 +13,10 @@ extension AppDelegate: ViewControllersFactoryProtocol {
 
     // MARK: - View Controllers Factory
     
-    func createMemeCreatorViewController(originalImage: UIImage, modelController: MemeModelController) -> MemeCreatorViewController {
+    func createMemeCreatorViewController(originalImageData: Data, modelController: MemeModelController) -> MemeCreatorViewController {
         return MemeCreatorViewController(nibName: MemeCreatorViewController.className,
                                          bundle: Bundle(for: MemeCreatorViewController.self),
-                                         originalImage: originalImage,
+                                         originalImageData: originalImageData,
                                          modelController: modelController)
     }
     
@@ -27,10 +27,10 @@ extension AppDelegate: ViewControllersFactoryProtocol {
                                      modelController: modelController)
     }
     
-    func createDetailViewController(memedImage: UIImage) -> DetailViewController {
-        return DetailViewController(nibName: DetailViewController.className,
+    func createDetailViewController(memedImageData: Data) -> DetailViewController {
+        return DetailViewController(nibName: DetailViewController.className,  
                                     bundle: Bundle(for: DetailViewController.self),
-                                    memedImage: memedImage)
+                                    memedImageData: memedImageData)
     }
     
 }
