@@ -10,8 +10,6 @@ Integrate two similar Nanodegree projects I've done into one, rewritting old cod
 * The method used in printing the screen (and saving the memed image) is not working as expected. A white bar is generated over the image.
 
 ## TODOs
-* Implement persistence layer using [Realm](https://realm.io/).
 * Integrate [MemeMe 2.0](https://github.com/andrebocato/MemeMe2.0) features.
-* Implement networking layer.
-* Implement a random image generator using the [Flickr API](https://www.flickr.com/services/api/).
 * Properly add and fix icons.
+* Implement a "select image quality for exporting"-like feature.
