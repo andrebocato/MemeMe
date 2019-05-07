@@ -18,13 +18,19 @@ class RealmMeme: Object {
     
     // MARK - Initialization
     
-    /// <#Description#>
+    /// Initializes a Meme persisted object from a Meme.
     ///
-    /// - Parameter meme: <#meme description#>
+    /// - Parameter meme: A Meme.
     convenience init(meme: Meme) {
         self.init()
         self.id = "\(meme.id)"
         self.memeData = try? JSONEncoder().encode(meme)
+    }
+    
+    // MARK: - Functions
+    
+    override static func primaryKey() -> String? {
+        return "id"
     }
     
 }

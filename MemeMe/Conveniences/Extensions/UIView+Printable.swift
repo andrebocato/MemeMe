@@ -19,6 +19,7 @@ extension UIView: Printable {
     
     /// Generates an image data by printing the visible view content.
     ///
+    /// - Parameter bounds: GRect that determines the view area to be printed.
     /// - Returns: Image data of the view content.
     func asImageData(bounds: CGRect) -> Data? {
         let image = UIGraphicsImageRenderer(bounds: bounds).image(actions: { (rendererContext) in

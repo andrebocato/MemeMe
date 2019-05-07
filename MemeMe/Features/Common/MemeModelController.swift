@@ -11,14 +11,20 @@ import Foundation
 /// Class specialized in controlling the model's CRUD.
 class MemeModelController {
     
-    // MARK: - Private Properties
+    // MARK: - Dependencies
     
-    var memes = MemeDatabase.shared.memes // @TODO: remove singleton
+    private let memeDatabase: MemeDatabaseProtocol
     
     // MARK: - Public Properties
     
-    var memesCount: Int {
-        return memes.count
+    var memes: [Meme]
+    
+    // MARK: - Initializatio
+    
+    init(memeDatabase: MemeDatabaseProtocol,
+         memes: [Meme]) {
+        self.memeDatabase = memeDatabase
+        self.memes = memes
     }
     
     // MARK: - Public Functions
@@ -28,6 +34,11 @@ class MemeModelController {
     /// - Parameter searchID: ID of the Meme being looked for.
     /// - Returns: The Meme resulting from the search.
     func meme(withID searchID: String) -> Meme? {
+        do {
+            return try memeDatabase.fetchMeme(withID: searchID)
+        } catch {
+            
+        }
         return memes.filter { $0.id == searchID }.first
     }
     
