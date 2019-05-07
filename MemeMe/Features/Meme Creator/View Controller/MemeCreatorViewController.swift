@@ -20,6 +20,7 @@ class MemeCreatorViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var topTextField: UITextField!
     @IBOutlet private weak var bottomTextField: UITextField!
+    @IBOutlet private weak var printScreenView: UIView!
     
     // MARK: - Initialization
     
@@ -96,7 +97,7 @@ class MemeCreatorViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func finishBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
-        guard let printScreenData = view.asImageData(bounds: imageView.bounds) else { return }
+        guard let printScreenData = printScreenView.asImageData(bounds: printScreenView.bounds) else { return }
         let newMeme = Meme(topText: topTextField.text ?? "",
                            bottomText: bottomTextField.text ?? "",
                            originalImageData: originalImageData,
@@ -167,6 +168,16 @@ extension MemeCreatorViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if string.isEmpty {
+            return true
+        }
+        if textField.text!.count <= 30 {
+            return true
+        }
+        return false
     }
     
 }

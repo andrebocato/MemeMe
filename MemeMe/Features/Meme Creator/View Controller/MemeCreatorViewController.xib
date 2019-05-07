@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="bottomTextField" destination="qLT-S7-Cu4" id="KEc-sV-3fW"/>
                 <outlet property="imageView" destination="SCk-YT-MoZ" id="8xD-aJ-se0"/>
+                <outlet property="printScreenView" destination="oqA-Ok-rZd" id="Sip-kn-oDr"/>
                 <outlet property="topTextField" destination="xBQ-ni-GI1" id="Fur-jV-756"/>
                 <outlet property="view" destination="0at-bf-4tc" id="Xst-0N-ayk"/>
             </connections>
@@ -23,30 +24,44 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SCk-YT-MoZ">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oqA-Ok-rZd">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                </imageView>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="TOP TEXT" textAlignment="center" clearsOnBeginEditing="YES" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xBQ-ni-GI1">
-                    <rect key="frame" x="172" y="127" width="70.5" height="17"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                </textField>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="BOTTOM TEXT" textAlignment="center" clearsOnBeginEditing="YES" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qLT-S7-Cu4">
-                    <rect key="frame" x="156" y="762" width="102" height="17"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                </textField>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SCk-YT-MoZ">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
+                        </imageView>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="TOP TEXT" textAlignment="center" clearsOnBeginEditing="YES" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xBQ-ni-GI1">
+                            <rect key="frame" x="172" y="83" width="70.5" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                        </textField>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="BOTTOM TEXT" textAlignment="center" clearsOnBeginEditing="YES" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qLT-S7-Cu4">
+                            <rect key="frame" x="156" y="718" width="102" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                        </textField>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="qLT-S7-Cu4" firstAttribute="top" secondItem="SCk-YT-MoZ" secondAttribute="bottom" constant="-100" id="7ey-Uz-GlW"/>
+                        <constraint firstItem="SCk-YT-MoZ" firstAttribute="top" secondItem="xBQ-ni-GI1" secondAttribute="bottom" constant="-100" id="Aqx-6g-fER"/>
+                        <constraint firstItem="SCk-YT-MoZ" firstAttribute="top" secondItem="oqA-Ok-rZd" secondAttribute="top" id="JYZ-e3-nd8"/>
+                        <constraint firstItem="SCk-YT-MoZ" firstAttribute="leading" secondItem="oqA-Ok-rZd" secondAttribute="leading" id="Ngq-nc-CyK"/>
+                        <constraint firstAttribute="trailing" secondItem="SCk-YT-MoZ" secondAttribute="trailing" id="RCb-Y0-1Cc"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="xBQ-ni-GI1" secondAttribute="trailing" constant="10" id="Wga-7A-PRr"/>
+                        <constraint firstItem="xBQ-ni-GI1" firstAttribute="centerX" secondItem="oqA-Ok-rZd" secondAttribute="centerX" id="crv-NB-a1t"/>
+                        <constraint firstAttribute="bottom" secondItem="SCk-YT-MoZ" secondAttribute="bottom" id="dYz-Rd-MZf"/>
+                        <constraint firstItem="qLT-S7-Cu4" firstAttribute="centerX" secondItem="oqA-Ok-rZd" secondAttribute="centerX" id="w12-cE-g6J"/>
+                        <constraint firstItem="xBQ-ni-GI1" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="oqA-Ok-rZd" secondAttribute="leading" constant="10" id="yue-oU-LhJ"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="qAJ-46-2H0" firstAttribute="bottom" secondItem="SCk-YT-MoZ" secondAttribute="bottom" id="2eX-60-eyq"/>
-                <constraint firstItem="SCk-YT-MoZ" firstAttribute="top" secondItem="qAJ-46-2H0" secondAttribute="top" id="7vl-G2-mdA"/>
-                <constraint firstItem="qAJ-46-2H0" firstAttribute="trailing" secondItem="SCk-YT-MoZ" secondAttribute="trailing" id="Czn-Wl-pUA"/>
-                <constraint firstItem="SCk-YT-MoZ" firstAttribute="leading" secondItem="qAJ-46-2H0" secondAttribute="leading" id="Igw-af-aFI"/>
-                <constraint firstItem="SCk-YT-MoZ" firstAttribute="top" secondItem="xBQ-ni-GI1" secondAttribute="bottom" constant="-100" id="JGM-un-4qQ"/>
-                <constraint firstItem="qLT-S7-Cu4" firstAttribute="top" secondItem="SCk-YT-MoZ" secondAttribute="bottom" constant="-100" id="Kgc-7o-yS2"/>
-                <constraint firstItem="qLT-S7-Cu4" firstAttribute="centerX" secondItem="qAJ-46-2H0" secondAttribute="centerX" id="bXF-su-xnP"/>
-                <constraint firstItem="xBQ-ni-GI1" firstAttribute="centerX" secondItem="qAJ-46-2H0" secondAttribute="centerX" id="dd3-2t-DpJ"/>
+                <constraint firstItem="qAJ-46-2H0" firstAttribute="top" secondItem="oqA-Ok-rZd" secondAttribute="top" id="B3r-tS-eI2"/>
+                <constraint firstItem="qAJ-46-2H0" firstAttribute="leading" secondItem="oqA-Ok-rZd" secondAttribute="leading" id="GEi-Pv-DQT"/>
+                <constraint firstItem="oqA-Ok-rZd" firstAttribute="trailing" secondItem="qAJ-46-2H0" secondAttribute="trailing" id="tDF-fK-hF4"/>
+                <constraint firstItem="oqA-Ok-rZd" firstAttribute="bottom" secondItem="qAJ-46-2H0" secondAttribute="bottom" id="yEw-6B-meT"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="qAJ-46-2H0"/>
             <point key="canvasLocation" x="-4.3478260869565224" y="156.69642857142856"/>
