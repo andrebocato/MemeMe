@@ -97,7 +97,7 @@ class MemeCreatorViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func finishBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
-        guard let printScreenData = view.asImageData(bounds: imageView.bounds) else { return } // @TODO: fix white bars on produced image
+        guard let printScreenData = view.asImageData(bounds: imageView.bounds) else { return }
         let newMeme = Meme(topText: topTextField.text ?? "",
                            bottomText: bottomTextField.text ?? "",
                            originalImageData: originalImageData,

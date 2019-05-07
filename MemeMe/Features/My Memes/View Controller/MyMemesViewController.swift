@@ -177,10 +177,12 @@ extension MyMemesViewController: UIImagePickerControllerDelegate, UINavigationCo
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let imageData = info[UIImagePickerController.InfoKey.originalImage] as? Data else {
+        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
+            let imageData = image.pngData() else {
+                
             AlertHelper.presentAlert(inController: self,
-                                  title: "Oops!",
-                                  message: "Something went wrong. Try again.")
+                                     title: "Oops!",
+                                     message: "Something went wrong. Try again.")
             dismiss(animated: true, completion: nil)
             return
         }

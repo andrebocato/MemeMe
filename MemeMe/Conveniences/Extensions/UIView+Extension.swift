@@ -1,5 +1,5 @@
 //
-//  UIView+Extension.swift
+//  UIView+Loadable.swift
 //  MemeMe
 //
 //  Created by Andre Sanches Bocato on 02/05/19.
