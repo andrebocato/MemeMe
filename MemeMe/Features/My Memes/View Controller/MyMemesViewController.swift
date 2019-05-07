@@ -56,6 +56,7 @@ class MyMemesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
+        modelController.fetchAllMemes()
     }
     
     // MARK: - UI Configuration
@@ -117,7 +118,7 @@ extension MyMemesViewController: UICollectionViewDataSource {
     // MARK: - Collection View Data Source
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let numberOfMemes = modelController.memesCount 
+        let numberOfMemes = modelController.memes.count
         if numberOfMemes == 0 {
             view.showEmptyView(message: "You haven't created any memes yet. Create some!")
             return 0
@@ -178,7 +179,7 @@ extension MyMemesViewController: UIImagePickerControllerDelegate, UINavigationCo
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
-            let imageData = image.pngData() else {
+            let imageData = image.jpegData(compressionQuality: 0.7) else {
                 
             AlertHelper.presentAlert(inController: self,
                                      title: "Oops!",

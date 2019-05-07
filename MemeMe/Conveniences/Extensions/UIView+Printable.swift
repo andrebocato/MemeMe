@@ -25,7 +25,7 @@ extension UIView: Printable {
         let image = UIGraphicsImageRenderer(bounds: bounds).image(actions: { (rendererContext) in
             layer.render(in: rendererContext.cgContext)
         })
-        return image.pngData()
+        return image.jpegData(compressionQuality: 0.7)
     }
     
 }

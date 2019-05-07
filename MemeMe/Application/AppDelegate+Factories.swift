@@ -34,3 +34,14 @@ extension AppDelegate: ViewControllersFactoryProtocol {
     }
     
 }
+
+extension AppDelegate: ModelControllersFactoryProtocol {
+    
+    // MARK: - Model Controllers Factory
+    
+    func createMemeModelController(memes: [Meme]) -> MemeModelController {
+        return MemeModelController(memeDatabase: DependencyInjection.memeDatabase,
+                                   memes: memes)
+    }
+    
+}
