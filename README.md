@@ -15,4 +15,5 @@ Integrate two similar Nanodegree projects I've done into one, rewritting old cod
 * Implement loading views on Fetching actions.
 * Implement long gesture recognizers.
 * Implement deletion buttons.
-* Figure out a way to display text edition
+* Figure out a way to display text edition.
+* Merge uncommited changes.
