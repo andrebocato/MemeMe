@@ -11,19 +11,19 @@ import UIKit
 struct Meme: Codable {
     
     /// Text shown on the top.
-    var topText: String
+    let topText: String
     
     /// Text shown on the bottom.
-    var bottomText: String
+    let bottomText: String
     
     /// Image data used to create the meme, with no text over it.
-    var originalImageData: Data
+    let originalImageData: Data
     
     /// Image data created from the original image with text over it.
-    var memedImageData: Data
+    let memedImageData: Data
     
     /// Object identifier.
-    var id: String
+    let id: String
 }
 
 extension Meme: Equatable {

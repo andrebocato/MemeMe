@@ -8,9 +8,11 @@
 
 import Foundation
 
-/// Defines the model controller states to be reflected on the model holder.
+/// Defines the logic controller possible errors to be handled by the LogicController's holder.
 ///
 /// - persistenceError: A persistence error has occurred.
-enum MemeModelControllerState {
+/// - business: Some business error logic.
+enum MemeDatabaseLogicControllerError: Error {
     case persistenceError(PersistenceError)
+    case business(Error) // use if needed, and create the error type for this guy...
 }

@@ -13,35 +13,24 @@ extension AppDelegate: ViewControllersFactoryProtocol {
 
     // MARK: - View Controllers Factory
     
-    func createMemeCreatorViewController(originalImageData: Data, modelController: MemeModelController) -> MemeCreatorViewController {
+    func createMemeCreatorViewController(originalImageData: Data, logicController: MemeDatabaseLogicController) -> MemeCreatorViewController {
         return MemeCreatorViewController(nibName: MemeCreatorViewController.className,
                                          bundle: Bundle(for: MemeCreatorViewController.self),
                                          originalImageData: originalImageData,
-                                         modelController: modelController)
+                                         logicController: logicController)
     }
     
-    func createMyMemesViewController(modelController: MemeModelController) -> MyMemesViewController {
+    func createMyMemesViewController(logicController: MemeDatabaseLogicController) -> MyMemesViewController {
         return MyMemesViewController(nibName: MyMemesViewController.className,
                                      bundle: Bundle(for: MyMemesViewController.self),
                                      viewControllersFactory: self,
-                                     modelController: modelController)
+                                     logicController: logicController)
     }
     
     func createDetailViewController(memedImageData: Data) -> DetailViewController {
         return DetailViewController(nibName: DetailViewController.className,  
                                     bundle: Bundle(for: DetailViewController.self),
                                     memedImageData: memedImageData)
-    }
-    
-}
-
-extension AppDelegate: ModelControllersFactoryProtocol {
-    
-    // MARK: - Model Controllers Factory
-    
-    func createMemeModelController(memes: [Meme]) -> MemeModelController {
-        return MemeModelController(memeDatabase: DependencyInjection.memeDatabase,
-                                   memes: memes)
     }
     
 }

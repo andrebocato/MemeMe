@@ -13,7 +13,7 @@ class MyMemesViewController: UIViewController {
     // MARK: - Dependencies
     
     private let viewControllersFactory: ViewControllersFactoryProtocol
-    private let modelController: MemeModelController
+    private let logicController: MemeDatabaseLogicController
     
     // MARK: - IBOutlets
     
@@ -34,9 +34,9 @@ class MyMemesViewController: UIViewController {
     init(nibName nibNameOrNil: String?,
          bundle nibBundleOrNil: Bundle?,
          viewControllersFactory: ViewControllersFactoryProtocol,
-         modelController: MemeModelController) {
+         logicController: MemeDatabaseLogicController) {
         self.viewControllersFactory = viewControllersFactory
-        self.modelController = modelController
+        self.logicController = logicController
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -56,7 +56,7 @@ class MyMemesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
-        modelController.fetchAllMemes()
+        try? logicController.fetchAllMemes() // TODO: handle errors?
     }
     
     // MARK: - UI Configuration
@@ -118,7 +118,7 @@ extension MyMemesViewController: UICollectionViewDataSource {
     // MARK: - Collection View Data Source
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let numberOfMemes = modelController.memes.count
+        let numberOfMemes = logicController.memes.count
         if numberOfMemes == 0 {
             view.showEmptyView(message: "You haven't created any memes yet. Create some!")
             return 0
@@ -130,7 +130,7 @@ extension MyMemesViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemeCell.className, for: indexPath) as? MemeCell else { return UICollectionViewCell() }
-        cell.configure(with: modelController.memes[indexPath.row].memedImageData)
+        cell.configure(with: logicController.memes[indexPath.row].memedImageData)
         return cell
     }
     
@@ -143,7 +143,7 @@ extension MyMemesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        let memedImageData = modelController.memes[indexPath.item].memedImageData
+        let memedImageData = logicController.memes[indexPath.item].memedImageData
         let detailViewController = viewControllersFactory.createDetailViewController(memedImageData: memedImageData)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
@@ -188,7 +188,7 @@ extension MyMemesViewController: UIImagePickerControllerDelegate, UINavigationCo
             return
         }
         
-        let memeCreatorViewController = viewControllersFactory.createMemeCreatorViewController(originalImageData: imageData, modelController: modelController)
+        let memeCreatorViewController = viewControllersFactory.createMemeCreatorViewController(originalImageData: imageData, logicController:logicController)
         dismiss(animated: true, completion: nil)
         navigationController?.pushViewController(memeCreatorViewController, animated: true)
     }

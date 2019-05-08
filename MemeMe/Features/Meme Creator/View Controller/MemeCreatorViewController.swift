@@ -13,7 +13,7 @@ class MemeCreatorViewController: UIViewController {
     // MARK: - Dependencies
     
     private let originalImageData: Data
-    private let modelController: MemeModelController
+    private let logicController: MemeDatabaseLogicController
     
     // MARK: - IBOutlets
     
@@ -27,9 +27,9 @@ class MemeCreatorViewController: UIViewController {
     init(nibName nibNameOrNil: String?,
          bundle nibBundleOrNil: Bundle?,
          originalImageData: Data,
-         modelController: MemeModelController) {
+         logicController: MemeDatabaseLogicController) {
         self.originalImageData = originalImageData
-        self.modelController = modelController
+        self.logicController = logicController
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -98,14 +98,23 @@ class MemeCreatorViewController: UIViewController {
     
     @objc private func finishBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
         guard let printScreenData = printScreenView.asImageData(bounds: printScreenView.bounds) else { return }
-        let newMeme = Meme(topText: topTextField.text ?? "",
-                           bottomText: bottomTextField.text ?? "",
-                           originalImageData: originalImageData,
-                           memedImageData: printScreenData,
-                           id: UUID().uuidString)
-
-        modelController.createNew(newMeme)
-        navigationController?.popViewController(animated: true)
+        
+        // this should be inside the logic controller
+//        let newMeme = Meme,
+//                           id: UUID().uuidString)
+        let memeInfo: MemeDatabaseLogicController.MemeInfo = (
+            topText: topTextField.text,
+            bottomText: bottomTextField.text,
+            originalImageData: originalImageData,
+            memedImageData: printScreenData)
+        
+        do {
+            try logicController.createNewMeme(from: memeInfo)
+            navigationController?.popViewController(animated: true)
+        } catch {
+            presentError(error)
+        }
+        
     }
     
     @objc private func discardBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
@@ -115,6 +124,11 @@ class MemeCreatorViewController: UIViewController {
                               rightAction: UIAlertAction(title: "Discard", style: .destructive, handler: { [weak self] (action) in
                                 self?.navigationController?.popViewController(animated: true)
                               }))
+    }
+    
+    // MARK: - Helpers
+    private func presentError(_ error: Error) {
+        AlertHelper.presentAlert(inController: self, title: "Error!", message: error.localizedDescription)
     }
     
     // MARK: - Attributed Text Attributes

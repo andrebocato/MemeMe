@@ -1,5 +1,5 @@
 //
-//  MemeModelController.swift
+//  MemeStorageLogicController.swift
 //  MemeMe
 //
 //  Created by Andre Sanches Bocato on 06/05/19.
@@ -8,22 +8,21 @@
 
 import Foundation
 
-/// Class specialized in controlling the model's CRUD.
-class MemeModelController {
+
+/// Class specialized in controlling the the memes CRUD logic.
+class MemeStorageLogicController {
     
     // MARK: - Dependencies
     
     private let memeDatabase: MemeDatabaseProtocol
     
     // MARK: - Public Properties
-    
-    var memes: [Meme]
-    weak var delegate: MemeModelControllerDelegate?
+    weak var delegate: delegate
+    private(set) var memes: [Meme] = [] // tem que ser privado, pq não deveria ser modificado "de fora", somente por dentro...
     
     // MARK: - Initializatio
     
-    init(memeDatabase: MemeDatabaseProtocol,
-         memes: [Meme]) {
+    init(memeDatabase: MemeDatabaseProtocol) {
         self.memeDatabase = memeDatabase
         self.memes = memes
     }
