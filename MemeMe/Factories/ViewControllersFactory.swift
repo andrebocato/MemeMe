@@ -14,14 +14,14 @@ protocol ViewControllersFactoryProtocol {
     
     /// Creates a configured instance of a MyMemesViewController.
     ///
-    /// - Parameter modelController: A MemeModelController to be use on the view controller.
+    /// - Parameter logicController: A MemeDatabaseLogicController to be use on the view controller.
     /// - Returns: A configured MyMemesViewController.
     func createMyMemesViewController(logicController: MemeDatabaseLogicController) -> MyMemesViewController
     
     /// Creates a configured instance of a MemeCreatorViewController.
     ///
     /// - Parameter originalImageData: Image data from the image picker to be worked on.
-    /// - Parameter modelController: A MemeModelController to be use on the view controller.
+    /// - Parameter logicController: A MemeDatabaseLogicController to be use on the view controller.
     /// - Returns: A configured MemeCreatorViewController.
     func createMemeCreatorViewController(originalImageData: Data, logicController: MemeDatabaseLogicController) -> MemeCreatorViewController
         

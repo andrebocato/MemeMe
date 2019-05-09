@@ -99,15 +99,12 @@ class MemeCreatorViewController: UIViewController {
     @objc private func finishBarButtonItemDidReceiveTouchUpInside(_ sender: UIBarButtonItem) {
         guard let printScreenData = printScreenView.asImageData(bounds: printScreenView.bounds) else { return }
         
-        // this should be inside the logic controller
-//        let newMeme = Meme,
-//                           id: UUID().uuidString)
+        // @TODO: this should be inside the logic controller
         let memeInfo: MemeDatabaseLogicController.MemeInfo = (
             topText: topTextField.text,
             bottomText: bottomTextField.text,
             originalImageData: originalImageData,
             memedImageData: printScreenData)
-        
         do {
             try logicController.createNewMeme(from: memeInfo)
             navigationController?.popViewController(animated: true)

@@ -12,17 +12,18 @@ import Foundation
 class MemeDatabaseLogicController {
     
     // MARK: - Aliases
+    
     typealias MemeInfo = (topText: String?, bottomText: String?, originalImageData: Data, memedImageData: Data)
     
     // MARK: - Dependencies
     
     private let memeDatabase: MemeDatabaseProtocol
     
-    // MARK: - Public Properties
+    // MARK: - Private Properties
     
     private(set) var memes: [Meme] = [] // this guy needs to be private, 'cause it's shouldn't be externally modified, just read.
     
-    // MARK: - Initializatio
+    // MARK: - Initialization
     
     init(memeDatabase: MemeDatabaseProtocol) {
         self.memeDatabase = memeDatabase
@@ -34,6 +35,7 @@ class MemeDatabaseLogicController {
     ///
     /// - Parameter searchID: ID of the Meme being looked for.
     /// - Returns: The Meme resulting from the search.
+    /// - Throws: A persistence error.
     func fetchMeme(withID searchID: String) throws -> Meme? {
         do {
             return try memeDatabase.fetchMeme(withID: searchID)
@@ -43,6 +45,9 @@ class MemeDatabaseLogicController {
         }
     }
     
+    /// Fetches all memes from the database.
+    ///
+    /// - Throws: A persistence error.
     func fetchAllMemes() throws {
         do {
             memes = try memeDatabase.fetchAllMemes()
@@ -55,6 +60,7 @@ class MemeDatabaseLogicController {
     /// Creates a new 'Meme' object and persists it.
     ///
     /// - Parameter meme: Meme to be saved.
+    /// - Throws: A persistence error.
     func createNewMeme(from info: MemeInfo) throws {
         do {
             let newMeme = Meme(topText: info.topText ?? "",
@@ -72,6 +78,7 @@ class MemeDatabaseLogicController {
     /// Searched a Meme using a given ID and deletes it from the database.
     ///
     /// - Parameter targetID: ID of the meme to be deleted.
+    /// - Throws: A persistence error.
     func deleteMeme(withID targetID: String) throws {
         do {
             try memeDatabase.deleteMeme(withID: targetID)
@@ -82,6 +89,8 @@ class MemeDatabaseLogicController {
     }
     
     /// Deletes all memes from persistence.
+    ///
+    /// - Throws: A persistence error.
     func deleteAllMemes() throws {
         do {
             try memeDatabase.deleteAllMemes()

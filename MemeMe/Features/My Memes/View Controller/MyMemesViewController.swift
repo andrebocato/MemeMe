@@ -56,7 +56,7 @@ class MyMemesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
-        try? logicController.fetchAllMemes() // TODO: handle errors?
+        try? logicController.fetchAllMemes() // @TODO: handle errors?
     }
     
     // MARK: - UI Configuration
